@@ -1,0 +1,121 @@
+--
+-- DOT graph language (Graphviz) embedder.
+--
+-- License: MIT (c) 2023 Omikhleia
+--
+local base = require("embedders.base")
+local embedder = pl.class(base)
+embedder._name = "embedders.dot"
+
+function embedder.conversionCommand(_, options)
+  local resolution = SU.cast("integer", options.resolution or 300)
+  local width = options.width and SILE.measurement(options.width):tonumber()
+  local height = options.height and SILE.measurement(options.height):tonumber()
+  local layout = options.layout
+  local fontoverride = SU.boolean(options.fontoverride, true)
+
+  -- Build graphviz command-line options
+  local size
+  if width and height then
+    -- maximum width and height (in inches), expand to fill
+    size = string.format("-Gsize=%f,%f -Gratio=fill", width / 72, height / 72)
+  else
+    local actualwidth = width or SILE.measurement("100%fw"):tonumber()
+    local fh = SILE.measurement("100%fh"):tonumber()
+    if fh == 0 then
+      -- There are cases where the frame height is unknown (e.g. in a parbox,
+      -- or in a footnote-like context):
+      -- Fallback to the frame width (HACK, but better than nothing)
+      fh = SILE.measurement("100%fw"):tonumber()
+    end
+    local actualheight = height or fh
+
+    if width or height then
+      -- minimum width and height (in inches)
+      size = string.format("-Gsize=%f,%f!", actualwidth / 72, actualheight / 72)
+    else
+      -- enforce the maximum width:
+      -- graphviz can use a dpi resolution, but does not set it in the image
+      -- data (well, this may depend on the used renderer), so we cannot use
+      -- the image 'natural' size afterwards.
+      width = actualwidth
+      -- maximum width and height (in inches)
+      size = string.format("-Gsize=%f,%f", actualwidth / 72, actualheight / 72)
+    end
+  end
+  local dpi = string.format("-Gdpi=%f", resolution)
+
+  -- Build graphviz conversion command
+  local command = table.concat({
+    "dot",
+    "-Tpng", dpi,
+    size,
+    "$SOURCE",
+    "-o $TARGET",
+  }, " ")
+  if layout then
+    command = command .. string.format(" -K%s", layout)
+  end
+  if fontoverride then
+    local family = SILE.settings:get("font.family")
+    local gfontname = string.format("-Gfontname=\"%s\"", family)
+    local nfontname = string.format("-Nfontname=\"%s\"", family)
+    local efontname = string.format("-Efontname=\"%s\"", family)
+
+    command = table.concat({
+      command,
+      gfontname,
+      nfontname,
+      efontname
+    }, " ")
+  end
+
+  return command, width, height
+end
+
+embedder.documentation = [[\begin{document}
+The \strong{dot} embeddder supports the Graphviz DOT graph language.
+It requires the Graphviz collection of tools to be installed on your host system,
+as it invokes the \code{dot} program to perform the necessary conversion.
+
+Supported options are:
+
+\begin{itemize}
+\item{\autodoc:parameter{width=<dimen>} and/or \autodoc:parameter{height=<dimen>} can be set to specify
+the intended dimention(s) of the graph.}
+\item{\autodoc:parameter{layout=<string>} is an optional parameter that instructs the converter
+to use the corresponding Graphviz layout engine (such as \code{neato}, \code{fdp}, \code{twopi}, etc.),
+overriding the default \code{dot} layout.}
+\item{\autodoc:parameter{fontoverride=<boolean>} defaults to true and instructs the converter
+to use the current document font family for the graph (and all its nodes and edges), overriding
+the default settings.}
+\end{itemize}
+
+Here is, for instance, the exact same graph data represented with the \code{dot} and
+\code{neato} layout engines respectively.
+
+\begin{center}
+\begin[type=embed, format=dot, width=60%fw, layout=dot]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+  a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+
+\begin[type=embed, format=dot, height=30%fw, layout=neato]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+  a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+\end{center}
+
+\end{document}]]
+
+return embedder

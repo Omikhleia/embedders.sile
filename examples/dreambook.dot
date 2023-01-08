@@ -1,0 +1,146 @@
+digraph omikhleia {
+	rankdir=RL;
+	size="8,5"
+
+  subgraph cluster_couyards {
+    label = "couyards.sile";
+
+    couyards [shape=component,style=filled,fillcolor=aliceblue]
+
+    // couyards -> svg [color=gray]
+
+  }
+
+  subgraph cluster_ptable {
+    label = "ptable.sile";
+    //{rank=same nd_3_l nd_3 nd_3_r}
+
+    struts [shape=component,style=filled,fillcolor=aliceblue]
+    ptable [shape=component,style=filled,fillcolor=lightyellow]
+    parbox [shape=component,style=filled,fillcolor=lightyellow]
+    framebox [shape=component,style=filled,fillcolor=lightyellow]
+
+    subgraph cluster_graphics {
+      label = "graphics";
+      
+      renderer [style=filled,fillcolor=mistyrose]
+      rough [style=filled,fillcolor=mistyrose]
+      prng [style=filled,fillcolor=aliceblue]
+      
+      renderer -> rough
+      rough -> prng
+
+    }
+
+    // struts -> rebox [color=gray]
+    ptable -> parbox
+    framebox -> renderer
+    parbox -> struts 
+
+  }
+
+  subgraph cluster_textsubsuper {
+    label = "textsubsuper.sile";
+
+    textsubsuper [shape=component,style=filled,fillcolor=aliceblue]
+
+    // textsubsuper -> raiselower [color=gray]
+    // textsubsuper -> inputfilter [color=gray]
+
+  }
+
+  subgraph cluster_smartquotes {
+    label = "smartquotes.sile";
+
+    smartquotes [shape=component,style=filled,fillcolor=aliceblue]
+
+  }
+  
+  subgraph cluster_labelrefs {
+    label = "labelrefs.sile";
+
+    labelrefs [shape=component,style=filled,fillcolor=aliceblue]
+
+    // labelrefs -> infonode [color=gray]
+    // labelrefs -> pdf [style=dashed,color=gray]
+
+  }
+ 
+  subgraph cluster_xformats {
+    label = "xconverters.sile";
+    style = dashed;
+
+    dot [shape=component, label="xconverters.dot",color=red,fontcolor=orangered]
+
+  }
+  
+  subgraph cluster_highlighter{
+    label = "highlighter.sile";
+    style = dashed;
+
+    highlighter [shape=component, label="highlighter",color=red,fontcolor=orangered]
+
+  }
+ 
+  subgraph cluster_xgraphs {
+    label = "charts.sile";
+    style = dashed;
+
+    bargraph [shape=component, label="charts.bargraph",color=red,fontcolor=orangered]
+    piechart [shape=component, label="charts.piechart",color=red,fontcolor=orangered]
+    
+    piechart -> renderer
+    bargraph -> renderer
+
+  }
+  
+  subgraph cluster_markdown {
+    label = "markdown.sile";
+
+    markdown [shape=component,style=filled,fillcolor=lightyellow]
+    pandocast [shape=component,style=filled,fillcolor=lightyellow]
+    mrkcmd [shape=component,label="markdown.commands",style=filled,fillcolor=lightyellow]
+
+    markdown -> mrkcmd
+    pandocast -> mrkcmd
+
+
+  }
+
+  subgraph cluster_resilient {
+    label = "resilient.sile";
+
+    subgraph cluster_resilient_pkg {
+        label = "packages";
+    
+        epigraph [shape=component, label="resilient.epigraph",style=filled,fillcolor=aliceblue]
+        lists [shape=component, label="resilient.lists",style=filled,fillcolor=aliceblue]
+        poetry [shape=component, label="resilient.poetry",style=filled,fillcolor=mistyrose]
+        styles [shape=component, label="resilient.styles",style=filled,fillcolor=mistyrose]
+    
+        epigraph -> styles
+        lists -> styles
+        poetry -> styles
+    }
+  }
+  
+   // Move because some dependecy got wrong
+  
+ //   mrkcmd -> color [color=gray]
+ //    mrkcmd -> image [color=gray]
+    mrkcmd -> lists
+    mrkcmd -> ptable
+ //   mrkcmd -> rules [color=gray]
+    mrkcmd -> smartquotes
+ //   mrkcmd -> svg [color=gray]
+    mrkcmd -> textsubsuper
+    mrkcmd -> labelrefs
+    mrkcmd -> couyards [style=dashed]
+    mrkcmd -> highlighter [style=dashed]
+    mrkcmd -> dot [style=dashed]
+    mrkcmd -> bargraph [style=dashed]
+    mrkcmd -> piechart [style=dashed]
+
+ //   mrkcmd -> url [color=gray]
+
+}

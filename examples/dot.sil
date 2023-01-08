@@ -1,0 +1,112 @@
+\begin[papersize=a5]{document}
+\use[module=packages.embedders]
+\font[family=Libertinus Sans]
+
+\begin{center}
+\begin[type=embed, format=dot, height=3cm, layout=dot]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+    a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+
+\begin[type=embed, format=dot, width=4cm, layout=neato]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+    a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+
+\smallskip
+
+\begin[type=embed, format=dot, width=4cm, layout=twopi]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+    a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+
+\begin[type=embed, format=dot, height=5cm, layout=sfdp]{raw}
+graph {
+	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
+    a -- { b d };
+	b -- { c e };
+	c -- { f g h i };
+	e -- { j k l m n o };
+}
+\end{raw}
+\par
+\end{center}
+
+\comment{
+5x
+
+\begin[type=embed, format=dot, width=5cm, layout=dot]{raw}
+graph {
+    rankdir=LR;
+    a -- { b c d }; b -- { c e }; c -- { e f }; d -- { f g }; e -- h;
+    f -- { h i j g }; g -- k; h -- { o l }; i -- { l m j }; j -- { m n k };
+    k -- { n r }; l -- { o m }; m -- { o p n }; n -- { q r };
+    o -- { s p }; p -- { s t q }; q -- { t r }; r -- t; s -- z; t -- z;
+    { rank=same; b, c, d }
+    { rank=same; e, f, g }
+    { rank=same; h, i, j, k }
+    { rank=same; l, m, n }
+    { rank=same; o, p, q, r }
+    { rank=same; s, t }
+}
+\end{raw}
+\par
+
+x5
+
+\begin[type=embed, format=dot, height=5cm]{raw}
+graph {
+    rankdir=LR;
+    a -- { b c d }; b -- { c e }; c -- { e f }; d -- { f g }; e -- h;
+    f -- { h i j g }; g -- k; h -- { o l }; i -- { l m j }; j -- { m n k };
+    k -- { n r }; l -- { o m }; m -- { o p n }; n -- { q r };
+    o -- { s p }; p -- { s t q }; q -- { t r }; r -- t; s -- z; t -- z;
+    { rank=same; b, c, d }
+    { rank=same; e, f, g }
+    { rank=same; h, i, j, k }
+    { rank=same; l, m, n }
+    { rank=same; o, p, q, r }
+    { rank=same; s, t }
+}
+\end{raw}
+\par
+
+5x5
+
+\begin[type=embed, format=dot, width=5cm, height=5cm]{raw}
+graph {
+    rankdir=LR;
+    a -- { b c d }; b -- { c e }; c -- { e f }; d -- { f g }; e -- h;
+    f -- { h i j g }; g -- k; h -- { o l }; i -- { l m j }; j -- { m n k };
+    k -- { n r }; l -- { o m }; m -- { o p n }; n -- { q r };
+    o -- { s p }; p -- { s t q }; q -- { t r }; r -- t; s -- z; t -- z;
+    { rank=same; b, c, d }
+    { rank=same; e, f, g }
+    { rank=same; h, i, j, k }
+    { rank=same; l, m, n }
+    { rank=same; o, p, q, r }
+    { rank=same; s, t }
+}
+\end{raw}
+}
+
+\eject
+
+\center{\embed[format=dot, src=examples/dreambook.dot, width=95%fw]}
+
+\end{document}
