@@ -1,0 +1,24 @@
+digraph omikhleia {
+	rankdir=RL;
+	size="8,5"
+
+  subgraph cluster_embedders {
+    label = "embedders";
+    
+    base [shape=component, label="embedders.based",style=filled,fillcolor=aliceblue]
+    dot [shape=component, label="embedders.dot",style=filled,fillcolor=aliceblue]
+    lilypond [shape=component, label="embedders.lilypond",style=filled,fillcolor=aliceblue]
+
+    dot -> base
+    lilypond -> base
+  }
+
+  subgraph cluster_textsubsuper {
+    label = "packages";
+
+    embedders [shape=component,style=filled,fillcolor=aliceblue]
+
+    embedders -> dot [style=dashed]
+    embedders -> lilypond [style=dashed]
+  }
+}

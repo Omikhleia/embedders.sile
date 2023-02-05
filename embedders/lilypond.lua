@@ -51,16 +51,15 @@ function embedder.conversionCommand(_, options)
 end
 
 embedder.documentation = [[\begin{document}
-The \strong{lilypond} embedder supports for the LilyPond musical notation.
+The \strong{lilypond} embedder supports the LilyPond musical notation.
 The package requires the LilyPond software to be installed on your host system,
 as it invokes it to perform the necessary conversions\footnote{For security concerns,
-please note that the LilyPond language can include abitrary code. If you grabbed some LilyPond
+please note that the LilyPond language can include arbitrary code. If you grabbed some LilyPond
 score on the Internet, be cautious regarding what it does.}.
 
 \begin{itemize}
-\item{\autodoc:parameter{width=<dimen>} can be set to specify the intended width
-of the graph. It defaults to the full line width, and is a maximum size for wrapping,
-as the output is cropped (see below).}
+\item{\autodoc:parameter{width=<dimen>} can be set to specify the intended maximum width
+of the score. It defaults to the full line width.}
 \item{\autodoc:parameter{indent=<dimen>} is the indentation of the first staff. It defaults to 0.}
 \item{\autodoc:parameter{staffsize=<dimen>} is the size of the staves. It defaults to the
 current base line skip, just because.}
@@ -83,11 +82,6 @@ Here is an example score with default options, for illustration.
   c4 c, r
 }
 \end{raw}
-\par
-
-% Also mention the security concern with LilyPond
-% Reminder if running a docker image of SILE...
-% docker run -it --volume "$(pwd):/data" --user "$(id -u):$(id -g)" --security-opt seccomp=unconfined sile
 
 \end{document}]]
 

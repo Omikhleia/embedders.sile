@@ -23,7 +23,6 @@
   g'2.
   f4 e d
   c4 c, r
-
 }
 \end{raw}
 
@@ -97,19 +96,6 @@ global = {
   >>
 }  % End score
 \end{raw}
-
 \par
-Here I am Now
-
-\begin[type=embed, format=lilypond]{raw}
-\version "2.24.0"
-\relative {
-  \clef "bass"
-  \time 3/4
-  c,2
-}
-\end{raw}
-\par
-
 \noindent\embed[format=lilypond, src=examples/somemusic.ly]
 \end{document}

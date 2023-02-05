@@ -1,0 +1,29 @@
+\begin[class=resilient.book, papersize=6in x 9in]{document}
+\use[module=packages.embedders]
+\use[module=packages.autodoc-resilient]
+\language[main=en]
+\font[family=Libertinus Serif]
+
+\section{Embedders}
+
+\package-documentation{embedders}
+
+\subsection{Graphs (DOT language)}
+
+\embedder-documentation{dot}
+
+\center{\embed[format=dot, src=dreambook.dot, width=95%fw]}
+
+
+\subsection{Musical engraving (LilyPond)}
+
+\embedder-documentation{lilypond}
+
+---
+
+\embed[format=lilypond, src=examples/somemusic.ly]
+
+\noindent\embed[format=lilypond, width=50%lw, staffsize=4pt, indent=1.25em, src=examples/somemusic.ly]
+
+---
+\end{document}

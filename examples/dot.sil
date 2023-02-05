@@ -107,6 +107,6 @@ graph {
 
 \eject
 
-\center{\embed[format=dot, src=examples/dreambook.dot, width=95%fw]}
+\center{\embed[format=dot, src=examples/embedders.dot, width=95%fw]}
 
 \end{document}

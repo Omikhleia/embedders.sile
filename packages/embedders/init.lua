@@ -1,7 +1,7 @@
 --
--- Generic embedder base class package for SILE.
+-- Generic format embedder package for SILE.
 --
--- It provide a general mean for building "embedders" for raw inline content
+-- It provide a general mean for using "embedders" for raw inline content
 -- or an external source file, performing a conversion to generate an image
 -- for inclusion in the document.
 --
@@ -33,7 +33,7 @@ end
 
 -- PATH UTILITIES
 
--- Creates a file under the "embedded" subfolder besides the master document.
+-- Returns a file under the "embedded" subfolder besides the master document.
 local function handlePath (filename)
   local basename = pl.path.basename(filename)
   if not basename then SU.error("Cannot extract base name from "..filename) end
@@ -44,16 +44,24 @@ local function handlePath (filename)
   return pl.path.join(dir, basename)
 end
 
--- Builds a filename with some CRC if needed FIXME
-local function targetName (source, command, rawtext)
-  if not source then
-    source = pl.path.basename(SILE.masterFilename)
-  end
+-- Builds a file name for raw text content.
+-- The file name will be based on the master file name and includes a hash
+-- from the command and raw text, for caching.
+local function targetNameFromRaw (rawtext, command)
+  local source = pl.path.basename(SILE.masterFilename)
   local basename = handlePath(source)
   local hash = string.format("%x", zlib.crc32()(command))
-  if rawtext then
-    hash = hash .. "_" .. string.format("%x", zlib.crc32()(rawtext))
-  end
+    .. "_" .. string.format("%x", zlib.crc32()(rawtext))
+  local target = basename .. "_" .. hash
+  return target
+end
+
+-- Builds a file name for source file content.
+-- The file name will be based on the source file name and includes a hash
+-- from the command, for caching.
+local function targetNameFromSource (source, command)
+  local basename = handlePath(source)
+  local hash = string.format("%x", zlib.crc32()(command))
   local target = basename .. "_" .. hash
   return target
 end
@@ -86,7 +94,7 @@ local function shellEscapeCommand (command, source, target)
   end
 end
 
--- PACKAGE INIT
+-- PACKAGE
 
 function package:_init (_)
   base._init(self)
@@ -116,6 +124,8 @@ function package:registerCommands ()
     local target
     local preamble = owner:preambleContent(options)
     if preamble then
+      -- We need to add a preamble, so read the source, prepend the preamble,
+      -- write it again/
       local fd, err = io.open(source, "r")
       if not fd then return SU.error(err) end
       local raw = fd:read("*all")
@@ -123,14 +133,14 @@ function package:registerCommands ()
 
       local data = raw .. (preamble or "")
 
-      local targetBase = targetName(nil, command, data)
+      local targetBase = targetNameFromRaw(data, command)
       source = targetBase .. "." .. format
       target = targetBase .. ".png"
       local already = pl.path.exists(source)
       if already then
-        SU.debug("embedders", "Existing identical raw content", source)
+        SU.debug("embedders", "Existing identical content", source)
       else
-        SU.debug("embedders", "Saving raw content to", source)
+        SU.debug("embedders", "Saving content to", source)
         fd, err = io.open(source, "w")
         if not fd then return SU.error(err) end
         fd:write(data)
@@ -138,7 +148,8 @@ function package:registerCommands ()
         fd:close()
       end
     else
-      target = targetName(source, command) .. ".png"
+      -- We don't need a preamble so can use the source file directly.
+      target = targetNameFromSource(source, command) .. ".png"
     end
 
     shellEscapeCommand(command, source, target)
@@ -176,7 +187,7 @@ function package:registerRawHandlers ()
     local preamble = owner:preambleContent(options)
     local data = content[1] .. (preamble or "")
 
-    local targetBase = targetName(nil, command, data)
+    local targetBase = targetNameFromRaw(data, command)
     local source = targetBase .. "." .. format
     local target = targetBase .. ".png"
 
@@ -235,7 +246,7 @@ be added to the framework.
 
 Additionally, the \autodoc:command{\embedder-documentation{<format>}} command
 ouputs the documentation for a given embedder (for use, quite obviously, in
-some manual, such as this one.)
+some manual, such as this one).
 
 \end{document}]]
 

@@ -4,15 +4,11 @@
 [![Luacheck](https://img.shields.io/github/actions/workflow/status/Omikhleia/embedders.sile/luacheck.yml?branch=main&label=Luacheck&logo=Lua)](https://github.com/Omikhleia/embedders.sile/actions?workflow=Luacheck)
 [![Luarocks](https://img.shields.io/luarocks/v/Omikhleia/embedders.sile?label=Luarocks&logo=Lua)](https://luarocks.org/modules/Omikhleia/embedders.sile)
 
-This collection of modules for the [SILE](https://github.com/sile-typesetter/sile) typesetting
+This module for the [SILE](https://github.com/sile-typesetter/sile) typesetting
 system provides "embedders" for text formats that can be converted to an image, e.g. the DOT
 graph language (Graphviz) or the LilyPond musical notation.
 
-NOT YET READY FOR USE - JUST A QUICK'N DIRTY ATTEMPT
-
 ## Installation
-
-NOT AVAILABLE YET
 
 This module collection requires SILE v0.14 or upper.
 
@@ -29,7 +25,12 @@ detailed 3rd-party package installation information.)
 
 ## Usage
 
-...
+Examples are provided in the [examples](./examples) folder.
+
+The in-code package documentation may also be useful.
+A readable version of the documentation is included in the User Manual for
+the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection
+of classes and packages.
 
 ## License
 

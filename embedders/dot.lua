@@ -74,15 +74,15 @@ function embedder.conversionCommand(_, options)
 end
 
 embedder.documentation = [[\begin{document}
-The \strong{dot} embeddder supports the Graphviz DOT graph language.
+The \strong{dot} embedder supports the Graphviz DOT graph language.
 It requires the Graphviz collection of tools to be installed on your host system,
 as it invokes the \code{dot} program to perform the necessary conversion.
 
-Supported options are:
+The supported options are the following:
 
 \begin{itemize}
 \item{\autodoc:parameter{width=<dimen>} and/or \autodoc:parameter{height=<dimen>} can be set to specify
-the intended dimention(s) of the graph.}
+the intended dimension(s) of the graph.}
 \item{\autodoc:parameter{layout=<string>} is an optional parameter that instructs the converter
 to use the corresponding Graphviz layout engine (such as \code{neato}, \code{fdp}, \code{twopi}, etc.),
 overriding the default \code{dot} layout.}
