@@ -16,17 +16,37 @@ function embedder.preambleContent(_, options)
   if curindent then
     linewidth = linewidth:absolute() - curindent.width:absolute()
   end
+  local raggedright = SU.boolean(options.raggedright, false) and "##t" or "##f"
+  local raggedlast = SU.boolean(options.raggedlast, true) and "##t" or "##f"
 
   local preamble = string.format(
 [[#(set-global-staff-size %f)
 \paper {
   line-width=%f\pt
   indent=%f\pt
-  oddFooterMarkup=#f
-  oddHeaderMarkup=#f
-  bookTitleMarkup=#f
-  scoreTitleMarkup=#f
-}]], staffsize:tonumber(), linewidth:tonumber(), indent:tonumber())
+]], staffsize:tonumber(), linewidth:tonumber(), indent:tonumber())
+
+  -- These are absent by default if not set, as LilyPond has its own different
+  -- logic depending on the number of systems in the score.
+  if options.raggedright ~= nil then
+    preamble = preamble .. string.format([[
+  ragged-right=%s
+]], raggedright)
+  end
+  if options.raggedlast ~= nil then
+    preamble = preamble .. string.format([[
+  ragged-last=%s
+]], raggedlast)
+  end
+
+  preamble = preamble .. [[
+  oddFooterMarkup=##f
+  oddHeaderMarkup=##f
+  bookTitleMarkup=##f
+  scoreTitleMarkup=##f
+}
+]]
+print(preamble)
   return preamble
 end
 
@@ -57,12 +77,20 @@ as it invokes it to perform the necessary conversions\footnote{For security conc
 please note that the LilyPond language can include arbitrary code. If you grabbed some LilyPond
 score on the Internet, be cautious regarding what it does.}.
 
+The supported options are the following:
+
 \begin{itemize}
 \item{\autodoc:parameter{width=<dimen>} can be set to specify the intended maximum width
 of the score. It defaults to the full line width.}
 \item{\autodoc:parameter{indent=<dimen>} is the indentation of the first staff. It defaults to 0.}
 \item{\autodoc:parameter{staffsize=<dimen>} is the size of the staves. It defaults to the
 current base line skip, just because.}
+\item{\autodoc:parameter{raggedright=<boolean>} is absent by default,
+leaving Lilypond apply its usual logic, whether systems end at their natural horizontal
+length or fill the line width.}
+\item{\autodoc:parameter{raggedlast=<boolean>} is absent by default,
+leaving Lilypond apply its usual logic, whether the last system in the score ends at
+its natural horizonal length or fills the line width.}
 \end{itemize}
 
 Note that the output is generated as a single cropped image, disregarding pages.

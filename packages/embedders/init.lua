@@ -131,7 +131,7 @@ function package:registerCommands ()
       local raw = fd:read("*all")
       fd:close()
 
-      local data = raw .. (preamble or "")
+      local data = (preamble or "") .. raw
 
       local targetBase = targetNameFromRaw(data, command)
       source = targetBase .. "." .. format
@@ -185,7 +185,7 @@ function package:registerRawHandlers ()
     local command, width, height = owner:conversionCommand(options)
 
     local preamble = owner:preambleContent(options)
-    local data = content[1] .. (preamble or "")
+    local data = (preamble or "") .. content[1]
 
     local targetBase = targetNameFromRaw(data, command)
     local source = targetBase .. "." .. format
