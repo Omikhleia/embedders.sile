@@ -8,6 +8,8 @@ This module for the [SILE](https://github.com/sile-typesetter/sile) typesetting
 system provides "embedders" for text formats that can be converted to an image, e.g. the DOT
 graph language (Graphviz) or the LilyPond musical notation.
 
+![](embedders.png)
+
 ## Installation
 
 This module collection requires SILE v0.14 or upper.
