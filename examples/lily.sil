@@ -1,101 +1,55 @@
-\begin{document}
-\use[module=packages.embedders]
+\begin[papersize=a6,class=plain]{document}
 \neverindent
-\font[family=Libertinus Sans]
+\nofolios
+\use[module=packages.embedders]
+\use[module=packages.raiselower]
+\font[family=Libertinus Serif, size=10]
 
+\center{\font[weight=700, size=12]{Scores from \em{The Opalescent Mask}}}
+\center{Yann \font[features=+smcp]{Caraye}, 2020}
+
+\smallskip
+
+Alstre’s theme is
+\lower[height=0.5bs]{%
 \begin[type=embed, format=lilypond]{raw}
-\version "2.24.0"
-\relative c' {
-  \clef "treble"
-  \time 3/4
-  c'
-}
-\end{raw}
-
-\par
-\begin[type=embed, format=lilypond]{raw}
-\version "2.24.0"
-\relative {
-  \clef "bass"
-  \time 3/4
-  \tempo "Andante" 4 = 120
-  c,2 e8 c'
-  g'2.
-  f4 e d
-  c4 c, r
-}
-\end{raw}
-
-\par
-\begin[type=embed, format=lilypond]{raw}
-\version "2.24.0"
-Timeline = {
-  \time 4/4
-  \tempo 4=96
-  \partial 2
-  s2 | s1 | s2 \breathe s2 | s1 | s2 \bar "||" \break
-  s2 | s1 | s2 \breathe s2 | s1 | s2 \bar "||"
-}
-
-SopranoMusic = \relative g' {
-  g4 g | g g g g | g g g g | g g g g | g2
-  g4 g | g g g g | g g g g | g g g g | g2
-}
-
-AltoMusic = \relative c' {
-  d4 d | d d d d | d d d d | d d d d | d2
-  d4 d | d d d d | d d d d | d d d d | d2
-}
-
-TenorMusic = \relative a {
-  b4 b | b b b b | b b b b | b b b b | b2
-  b4 b | b b b b | b b b b | b b b b | b2
-}
-
-BassMusic =  \relative g {
-  g4 g | g g g g | g g g g | g g g g | g2
-  g4 g | g g g g | g g g g | g g g g | g2
-}
-
+\version "2.20.0"
 global = {
- \key g \major
+  \time 5/4
+  \key c \major
+  \tempo 4=100
 }
-
-\score {  % Start score
+melody = \relative c' {
+  \global
+ \stemUp c4 \stemDown g''8 [ \stemDown b8 ] \stemDown b,4 \stemUp  e,2
+}
+\score {
   <<
-    \new PianoStaff <<  % Start pianostaff
-      \new Staff <<  % Start Staff = RH
-        \global
-        \clef "treble"
-        \new Voice = "Soprano" <<  % Start Voice = "Soprano"
-          \Timeline
-          \voiceOne
-          \SopranoMusic
-        >>  % End Voice = "Soprano"
-        \new Voice = "Alto" <<  % Start Voice = "Alto"
-          \Timeline
-          \voiceTwo
-          \AltoMusic
-        >>  % End Voice = "Alto"
-      >>  % End Staff = RH
-      \new Staff <<  % Start Staff = LH
-        \global
-        \clef "bass"
-        \new Voice = "Tenor" <<  % Start Voice = "Tenor"
-          \Timeline
-          \voiceOne
-          \TenorMusic
-        >>  % End Voice = "Tenor"
-        \new Voice = "Bass" <<  % Start Voice = "Bass"
-          \Timeline
-          \voiceTwo
-          \BassMusic
-        >>  % End Voice = "Bass"
-      >>  % End Staff = LH
-    >>  % End pianostaff
+    \new Staff { \melody }
   >>
-}  % End score
-\end{raw}
-\par
-\noindent\embed[format=lilypond, src=examples/somemusic.ly]
+  \layout { }
+}
+\end{raw}} (main variation).
+
+\medskip
+
+\center{\font[style=italic]{The Opalescent Mask,} Intro.}
+\smallskip
+\noindent\embed[format=lilypond, src=theme_alster_part1.ly, staffsize=9pt]
+
+\smallskip
+\center{\font[style=italic]{The Opalescent Mask,} Interlude A.}
+\smallskip
+\noindent\embed[format=lilypond, src=theme_alster_part2.ly, staffsize=9pt]
+
+\eject
+\center{\font[style=italic]{The Opalescent Mask,} Interlude B.}
+\smallskip
+\embed[format=lilypond, src=theme_alster_part3.ly, staffsize=9pt]
+
+\smallskip
+\center{\font[style=italic]{The Opalescent Mask,} Outro.}
+\smallskip
+\embed[format=lilypond, src=theme_alster_part4.ly, staffsize=9pt]
+
 \end{document}

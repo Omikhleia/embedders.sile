@@ -4,8 +4,8 @@ digraph omikhleia {
 
   subgraph cluster_embedders {
     label = "embedders";
-    
-    base [shape=component, label="embedders.based",style=filled,fillcolor=aliceblue]
+
+    base [shape=component, label="embedders.base",style=filled,fillcolor=aliceblue]
     dot [shape=component, label="embedders.dot",style=filled,fillcolor=aliceblue]
     lilypond [shape=component, label="embedders.lilypond",style=filled,fillcolor=aliceblue]
 
