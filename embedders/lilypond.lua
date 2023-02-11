@@ -22,8 +22,10 @@ function embedder.preambleContent(_, options)
   local preamble = string.format(
 [[#(set-global-staff-size %f)
 \paper {
-  line-width=%f\pt
+  paper-width=%f\pt
   indent=%f\pt
+  short-indent=0\pt
+  right-margin=0\pt
 ]], staffsize:tonumber(), linewidth:tonumber(), indent:tonumber())
 
   -- These are absent by default if not set, as LilyPond has its own different
@@ -46,7 +48,6 @@ function embedder.preambleContent(_, options)
   scoreTitleMarkup=##f
 }
 ]]
-print(preamble)
   return preamble
 end
 
@@ -62,7 +63,6 @@ function embedder.conversionCommand(_, options)
     dpi,
     "--png",
     "-dcrop",
-    "-dno-use-paper-size-for-page",
     "$SOURCE",
     "; rm xxxx.png; mv xxxx.cropped.png", "$TARGET" -- HACK
   }, " ")
