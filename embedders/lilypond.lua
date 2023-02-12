@@ -52,7 +52,7 @@ function embedder.preambleContent(_, options)
 end
 
 function embedder.conversionCommand(_, options)
-  local resolution = SU.cast("integer", options.resolution or 300)
+  local resolution = SU.cast("integer", options.resolution)
   local dpi = string.format("-dresolution=%f", resolution)
 
   -- Build lilypond conversion command
@@ -90,7 +90,7 @@ leaving Lilypond apply its usual logic, whether systems end at their natural hor
 length or fill the line width.}
 \item{\autodoc:parameter{raggedlast=<boolean>} is absent by default,
 leaving Lilypond apply its usual logic, whether the last system in the score ends at
-its natural horizonal length or fills the line width.}
+its natural horizontal length or fills the line width.}
 \end{itemize}
 
 Note that the output is generated as a single cropped image, disregarding pages.

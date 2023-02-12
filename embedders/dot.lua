@@ -8,7 +8,7 @@ local embedder = pl.class(base)
 embedder._name = "embedders.dot"
 
 function embedder.conversionCommand(_, options)
-  local resolution = SU.cast("integer", options.resolution or 300)
+  local resolution = SU.cast("integer", options.resolution)
   local width = options.width and SILE.measurement(options.width):tonumber()
   local height = options.height and SILE.measurement(options.height):tonumber()
   local layout = options.layout

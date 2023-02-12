@@ -94,6 +94,27 @@ local function shellEscapeCommand (command, source, target)
   end
 end
 
+-- RESOLUTION "GUESSER"
+
+local DEFAULT_RESOLUTION = 300
+local function globalResolution ()
+  -- All resilient classes support a resolution option...
+  local res1 = SILE.documentState.documentClass.resolution
+  -- The printoptions package may also supports a resolution...
+  -- HACK: We don't want the getter to raise a warning/error, so we check the (internal) declarations first.
+  -- It's a rather bad separation of concerns.
+  local res2 = SILE.settings.declarations["printoptions.resolution"] and SILE.settings:get("printoptions.resolution")
+  if not res1 then
+    return res2 or DEFAULT_RESOLUTION
+  elseif not res2 then
+    return res1 or DEFAULT_RESOLUTION
+  else
+    -- If we have both, pick the biggest one for now, just to be on the safe side.
+    -- Quality matters, after all.
+    return math.max(res1, res2)
+  end
+end
+
 -- PACKAGE
 
 function package:_init (_)
@@ -105,6 +126,7 @@ end
 
 function package:registerCommands ()
   self:registerCommand("embed", function(options, content)
+    options.resolution = options.resolution and SU.cast("integer", options.resolution) or globalResolution()
     if SU.hasContent(content) then SU.error("Embedder command doesn't expect content") end
     local source = SU.required(options, "src", "embedders")
     source = SILE.resolveFile(source) or SU.error("Couldn't find file " .. source)
@@ -177,6 +199,7 @@ end
 
 function package:registerRawHandlers ()
   self.class:registerRawHandler("embed", function(options, content)
+    options.resolution = options.resolution and SU.cast("integer", options.resolution) or globalResolution()
     local format = SU.required(options, "format", "embedders")
     local owner = SILE.scratch.embedders[format]
     if not owner then
@@ -215,26 +238,34 @@ end
 
 package.documentation =[[\begin{document}
 The \autodoc:package{embedders} package is a general framework for embedding
-images from textual representations, performing their conversion
+images from textual representations, performing their on-the-fly conversion
 via shell commands.
 
 As with anything that relies on invoking external programs on your host system,
-please be aware of possible security concerns. Be very cautious with the
+please be aware of potential security concerns. Be very cautious with the
 source of the elements you include in your documents!
 
 The package defines a single main command:
 
-\autodoc:command{\embed[src=<filename>, format=<string>]}
+\autodoc:command{\embed[src=<filename>, format=<string>, resolution=<integer>]}
 
 The format name is optional (derived from the file extension when absent),
 and refers to an “embedder” module, responsible for handling that specific
-format. Additional options might be passed, and used by embedder implementations.
-Refer to their respective documentation.
+format.
+
+The target resolution, in dots per inch (DPI), is also optional.
+When it is not specified, the package tries to infer it from your class (if the latter defines
+it\footnote{Classes from the \strong{resilient.sile} collection support a \code{resolution} option.}),
+or from the \autodoc:package{printoptions} package settings (when available).
+As a last resort, a default resolution of 300 DPI is used.
+
+Additional options can be passed, and used by embedder implementations.
+Refer to their respective documentation, for details on available options.
 
 The package also defines a \code{raw} environment going by same
 name (i.e. \autodoc:parameter{type=embed}), for including
 raw elements directly in your SILE document.
-It accepts the same options (but the source file name, obviously).
+It accepts the same options (except for a source file name, obviously).
 
 Converted elements are placed in an “embedded” directory located besides
 your main master document. It is used as a “cache”, to avoid converting
