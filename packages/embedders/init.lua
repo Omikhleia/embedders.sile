@@ -7,6 +7,8 @@
 --
 -- License: MIT (c) 2023 Omikhleia
 --
+require("silex.ast") -- Compatibility shims
+
 local base = require("packages.base")
 local lfs = require('lfs')
 local zlib = require("zlib")
@@ -127,7 +129,7 @@ end
 function package:registerCommands ()
   self:registerCommand("embed", function(options, content)
     options.resolution = options.resolution and SU.cast("integer", options.resolution) or globalResolution()
-    if SU.hasContent(content) then SU.error("Embedder command doesn't expect content") end
+    if SU.ast.hasContent(content) then SU.error("Embedder command doesn't expect content") end
     local source = SU.required(options, "src", "embedders")
     source = SILE.resolveFile(source) or SU.error("Couldn't find file " .. source)
 

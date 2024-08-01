@@ -3,6 +3,8 @@
 --
 -- License: MIT (c) 2023 Omikhleia
 --
+require("silex.types") -- Compatibility shims
+
 local base = require("packages.embedders")
 local embedder = pl.class(base)
 embedder._name = "embedders.lilypond"
@@ -10,8 +12,8 @@ embedder._name = "embedders.lilypond"
 function embedder.preambleContent(_, options)
   local staffsize = options.staffsize and SU.cast("measurement", options.staffsize)
     or SILE.settings:get("document.baselineskip").height
-  local indent = options.indent and SU.cast("measurement", options.indent) or SILE.measurement()
-  local linewidth = options.width and SU.cast("measurement", options.width) or SILE.measurement("100%lw")
+  local indent = options.indent and SU.cast("measurement", options.indent) or SILE.types.measurement()
+  local linewidth = options.width and SU.cast("measurement", options.width) or SILE.types.measurement("100%lw")
   local curindent = SILE.settings:get("current.parindent")
   if curindent then
     linewidth = linewidth:absolute() - curindent.width:absolute()

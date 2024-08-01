@@ -3,14 +3,16 @@
 --
 -- License: MIT (c) 2023 Omikhleia
 --
+require("silex.types") -- Compatibility shims
+
 local base = require("embedders.base")
 local embedder = pl.class(base)
 embedder._name = "embedders.dot"
 
 function embedder.conversionCommand(_, options)
   local resolution = SU.cast("integer", options.resolution)
-  local width = options.width and SILE.measurement(options.width):tonumber()
-  local height = options.height and SILE.measurement(options.height):tonumber()
+  local width = options.width and SILE.types.measurement(options.width):tonumber()
+  local height = options.height and SILE.types.measurement(options.height):tonumber()
   local layout = options.layout
   local fontoverride = SU.boolean(options.fontoverride, true)
 
@@ -20,13 +22,13 @@ function embedder.conversionCommand(_, options)
     -- maximum width and height (in inches), expand to fill
     size = string.format("-Gsize=%f,%f -Gratio=fill", width / 72, height / 72)
   else
-    local actualwidth = width or SILE.measurement("100%fw"):tonumber()
-    local fh = SILE.measurement("100%fh"):tonumber()
+    local actualwidth = width or SILE.types.measurement("100%fw"):tonumber()
+    local fh = SILE.types.measurement("100%fh"):tonumber()
     if fh == 0 then
       -- There are cases where the frame height is unknown (e.g. in a parbox,
       -- or in a footnote-like context):
       -- Fallback to the frame width (HACK, but better than nothing)
-      fh = SILE.measurement("100%fw"):tonumber()
+      fh = SILE.types.measurement("100%fw"):tonumber()
     end
     local actualheight = height or fh
 
