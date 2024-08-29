@@ -15,6 +15,7 @@ description = {
 }
 dependencies = {
   "lua >= 5.1",
+  "silex.sile",
 }
 build = {
   type = "builtin",
