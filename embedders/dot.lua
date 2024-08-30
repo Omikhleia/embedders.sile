@@ -106,7 +106,6 @@ graph {
 	e -- { j k l m n o };
 }
 \end{raw}
-
 \begin[type=embed, format=dot, height=30%fw, layout=neato]{raw}
 graph {
 	node [fillcolor="lightskyblue:darkcyan" style=filled gradientangle=270]
