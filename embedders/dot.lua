@@ -1,15 +1,27 @@
 --
 -- DOT graph language (Graphviz) embedder.
 --
--- License: MIT (c) 2023 Omikhleia
+-- License: GPL-3.0-or-later
 --
-require("silex.types") -- Compatibility shims
-
+-- Copyright (C) 2023-2025 Didier Willis
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+--
 local base = require("embedders.base")
 local embedder = pl.class(base)
 embedder._name = "embedders.dot"
 
-function embedder.conversionCommand(_, options)
+function embedder:conversionCommand (options)
   local resolution = SU.cast("integer", options.resolution)
   local width = options.width and SILE.types.measurement(options.width):tonumber()
   local height = options.height and SILE.types.measurement(options.height):tonumber()

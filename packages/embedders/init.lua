@@ -1,14 +1,22 @@
 --
 -- Generic format embedder package for SILE.
 --
--- It provide a general mean for using "embedders" for raw inline content
--- or an external source file, performing a conversion to generate an image
--- for inclusion in the document.
+-- License: GPL-3.0-or-later
 --
--- License: MIT (c) 2023 Omikhleia
+-- Copyright (C) 2023-2025 Didier Willis
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
 --
-require("silex.ast") -- Compatibility shims
-
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+--
 local base = require("packages.base")
 local lfs = require('lfs')
 local zlib = require("zlib")
@@ -18,7 +26,7 @@ package._name = "embedders"
 
 -- DYNAMIC (ON-DEMAND) EMBEDDER LOADER
 
--- Loads and instantiate embedders
+--- Loads and instantiate embedders
 local function embedders ()
   return setmetatable({}, {
     __index = function (self, key)
@@ -35,7 +43,9 @@ end
 
 -- PATH UTILITIES
 
--- Returns a file under the "embedded" subfolder besides the master document.
+--- Returns a base file path under the "embedded" subfolder besides the master document.
+-- @tparam string filename The input file name.
+-- @treturn string The base name of the target file under the "embedded" folder.
 local function handlePath (filename)
   local basename = pl.path.basename(filename)
   if not basename then SU.error("Cannot extract base name from "..filename) end
@@ -46,9 +56,12 @@ local function handlePath (filename)
   return pl.path.join(dir, basename)
 end
 
--- Builds a file name for raw text content.
+--- Builds a file name for raw text content.
 -- The file name will be based on the master file name and includes a hash
 -- from the command and raw text, for caching.
+-- @tparam string rawtext The raw text content.
+-- @tparam string command The command used to generate the image.
+-- @treturn string The target file name.
 local function targetNameFromRaw (rawtext, command)
   local source = pl.path.basename(SILE.masterFilename)
   local basename = handlePath(source)
@@ -58,9 +71,12 @@ local function targetNameFromRaw (rawtext, command)
   return target
 end
 
--- Builds a file name for source file content.
+--- Builds a file name for source file content.
 -- The file name will be based on the source file name and includes a hash
 -- from the command, for caching.
+-- @tparam string source The source file name.
+-- @tparam string command The command used to generate the image.
+-- @treturn string The target file name.
 local function targetNameFromSource (source, command)
   local basename = handlePath(source)
   local hash = string.format("%x", zlib.crc32()(command))
@@ -68,8 +84,11 @@ local function targetNameFromSource (source, command)
   return target
 end
 
--- Executes 'commmand', where $SOURCE and $TARGET are replaced with
+--- Executes 'commmand', where $SOURCE and $TARGET are replaced with
 -- the filename passed as arguments.
+-- @tparam string command The command to execute.
+-- @tparam string source The source file name.
+-- @tparam string target The target file name.
 local function shellEscapeCommand (command, source, target)
   local sourceTime = lfs.attributes(source, "modification")
 
@@ -121,13 +140,13 @@ end
 
 function package:_init (_)
   base._init(self)
-  self.class:loadPackage("image")
+  self:loadPackage("image")
 
   SILE.scratch.embedders = SILE.scratch.embedders or embedders()
 end
 
 function package:registerCommands ()
-  self:registerCommand("embed", function(options, content)
+  self:registerCommand("embed", function (options, content)
     options.resolution = options.resolution and SU.cast("integer", options.resolution) or globalResolution()
     if SU.ast.hasContent(content) then SU.error("Embedder command doesn't expect content") end
     local source = SU.required(options, "src", "embedders")
@@ -185,7 +204,7 @@ function package:registerCommands ()
     })
   end)
 
-  self:registerCommand("embedder-documentation", function(_, content)
+  self:registerCommand("embedder-documentation", function (_, content)
     local format = content[1]
     local owner = SILE.scratch.embedders[format]
     if not owner then
@@ -200,7 +219,7 @@ function package:registerCommands ()
 end
 
 function package:registerRawHandlers ()
-  self.class:registerRawHandler("embed", function(options, content)
+  self:registerRawHandler("embed", function (options, content)
     options.resolution = options.resolution and SU.cast("integer", options.resolution) or globalResolution()
     local format = SU.required(options, "format", "embedders")
     local owner = SILE.scratch.embedders[format]

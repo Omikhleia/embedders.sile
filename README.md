@@ -1,18 +1,16 @@
 # embedders.sile
 
-[![license](https://img.shields.io/github/license/Omikhleia/embedders.sile?label=License)](LICENSE)
+[![License](https://img.shields.io/github/license/Omikhleia/embedders.sile?label=License)](LICENSE)
 [![Luacheck](https://img.shields.io/github/actions/workflow/status/Omikhleia/embedders.sile/luacheck.yml?branch=main&label=Luacheck&logo=Lua)](https://github.com/Omikhleia/embedders.sile/actions?workflow=Luacheck)
 [![Luarocks](https://img.shields.io/luarocks/v/Omikhleia/embedders.sile?label=Luarocks&logo=Lua)](https://luarocks.org/modules/Omikhleia/embedders.sile)
 
-This module for the [SILE](https://github.com/sile-typesetter/sile) typesetting
-system provides "embedders" for text formats that can be converted to an image, e.g. the DOT
-graph language (Graphviz) or the LilyPond musical notation.
+This module for the [SILE](https://github.com/sile-typesetter/sile) typesetting system provides "embedders" for text formats that can be converted to an image, e.g. the DOT graph language (Graphviz) or the LilyPond musical notation.
 
 ![](embedders.png)
 
 ## Installation
 
-This module collection requires SILE v0.14 or upper.
+This module collection requires SILE v0.15.12.
 
 Installation relies on the **luarocks** package manager.
 
@@ -29,10 +27,8 @@ luarocks install embedders.sile
 Examples are provided in the [examples](./examples) folder.
 
 The in-code package documentation may also be useful.
-A readable version of the documentation is included in the User Manual for
-the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection
-of classes and packages.
+A readable version of the documentation is included in the User Manual for the [resilient.sile](https://github.com/Omikhleia/resilient.sile) collection of classes and packages.
 
 ## License
 
-All SILE-related code and samples in this repository are released under the MIT License, (c) 2023 Omikhleia.
+The code and samples in this repository are released under the GNU General Public License v3.0, (c) 2023-2025 Omikhleia.

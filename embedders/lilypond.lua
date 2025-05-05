@@ -1,15 +1,27 @@
 --
 -- LilyPond (musical notation) embedder for SILE.
 --
--- License: MIT (c) 2023 Omikhleia
+-- License: GPL-3.0-or-later
 --
-require("silex.types") -- Compatibility shims
-
+-- Copyright (C) 2023-2025 Didier Willis
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <https://www.gnu.org/licenses/>.
+--
 local base = require("packages.embedders")
 local embedder = pl.class(base)
 embedder._name = "embedders.lilypond"
 
-function embedder.preambleContent(_, options)
+function embedder:preambleContent (options)
   local staffsize = options.staffsize and SU.cast("measurement", options.staffsize)
     or SILE.settings:get("document.baselineskip").height
   local indent = options.indent and SU.cast("measurement", options.indent) or SILE.types.measurement()
@@ -53,7 +65,7 @@ function embedder.preambleContent(_, options)
   return preamble
 end
 
-function embedder.conversionCommand(_, options)
+function embedder:conversionCommand (options)
   local resolution = SU.cast("integer", options.resolution)
   local dpi = string.format("-dresolution=%f", resolution)
 
