@@ -31,4 +31,4 @@ A readable version of the documentation is included in the User Manual for the [
 
 ## License
 
-The code and samples in this repository are released under the GNU General Public License v3.0, (c) 2023-2025 Omikhleia.
+The code and samples in this repository are released under the MIT license, (c) 2023-2025 Omikhleia.
