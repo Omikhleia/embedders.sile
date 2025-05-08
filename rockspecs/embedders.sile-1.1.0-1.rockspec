@@ -1,9 +1,9 @@
 rockspec_format = "3.0"
 package = "embedders.sile"
-version = "1.0.0-1"
+version = "1.1.0-1"
 source = {
   url = "git+https://github.com/Omikhleia/embedders.sile.git",
-  tag = "v1.0.0",
+  tag = "v1.1.0",
 }
 description = {
   summary = "Graphviz, Lilypond (etc.) support for the SILE typesetting system.",
@@ -13,7 +13,7 @@ description = {
     the LilyPond musical notation.
   ]],
   homepage = "https://github.com/Omikhleia/embedders.sile",
-  license = "GPL-3.0",
+  license = "MIT",
 }
 dependencies = {
   "lua >= 5.1",

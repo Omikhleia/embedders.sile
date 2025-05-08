@@ -12,7 +12,7 @@ description = {
     the LilyPond musical notation.
   ]],
   homepage = "https://github.com/Omikhleia/embedders.sile",
-  license = "GPL-3.0",
+  license = "MIT",
 }
 dependencies = {
   "lua >= 5.1",
